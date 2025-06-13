@@ -3,8 +3,10 @@ import { RouterView, useRoute } from 'vue-router'
 import { computed, onMounted } from 'vue'
 import MainLayout from './layouts/MainLayout.vue';
 import AuthLayout from './layouts/AuthLayout.vue';
+import { useOnlineStatus } from './composables/useOnlienStatus';
 
 const route = useRoute()
+const { isOnline } = useOnlineStatus()
 
 onMounted(() => {
   setTimeout(() => {
@@ -24,7 +26,9 @@ const layoutComponent = computed(() => {
 </script>
 
 <template>
-  <component :is="layoutComponent">
+  <component :is="layoutComponent" v-if="isOnline">
     <RouterView />
   </component>
+
+  <Offline v-else />
 </template>
